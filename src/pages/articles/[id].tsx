@@ -1,7 +1,9 @@
 import { PrismaClient } from '@/app/generated/prisma';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardTitle, CardHeader, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const prisma = new PrismaClient();
 
@@ -30,24 +32,27 @@ export default function ArticlePage({ article }: { article: Article }) {
   if (!article) return notFound();
 
   return (
-    <div className="container mx-auto py-8">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">{article.title}</CardTitle>
-        </CardHeader>
-        <CardContent>
+    <div className="container mx-auto px-6 py-12">
+      <Card className="max-w-3xl mx-auto rounded-xl shadow-lg overflow-hidden">
+        <CardHeader className="p-0">
           <Image
             src={article.image}
             alt={article.title}
-            width={600}
-            height={300}
-            className="rounded-md mb-4 object-cover"
+            width={800}
+            height={400}
+            className="w-full h-64 md:h-96 object-cover"
           />
-          <p className="text-gray-600 mb-4">{article.description}</p>
-          <p>{article.content}</p>
-          <p className="text-sm text-gray-500 mt-4">
+        </CardHeader>
+        <CardContent className="p-8">
+          <CardTitle className="text-3xl font-bold text-gray-800 mb-4">{article.title}</CardTitle>
+          <p className="text-lg text-gray-600 mb-6">{article.description}</p>
+          <p className="text-gray-700 leading-relaxed mb-6">{article.content}</p>
+          <p className="text-sm text-gray-500 italic">
             Publié le {new Date(article.createdAt).toLocaleDateString('fr-FR')}
           </p>
+          <Button asChild className="mt-6 bg-gray-800 hover:bg-gray-700">
+            <Link href="/">Retour à l’accueil</Link>
+          </Button>
         </CardContent>
       </Card>
     </div>
